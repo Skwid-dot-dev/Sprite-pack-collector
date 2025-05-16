@@ -932,5 +932,149 @@
             const totalItems = gameState.inventory.reduce((total, item) => total + item.count, 0);
             itemCountEl.textContent = totalItems;
             
-            const rareItems = gameState.inventory.reduce((total,
+            const rareItems = gameState.inventory.reduce((total, item) => {
+                if (item.rarity === 'rare' || item.rarity === 'epic' || item.rarity === 'legendary') {
+                    return total + item.count;
+                }
+                return total;
+            }, 0);
+            rareCountEl.textContent = rareItems;
+        }
+
+        // Set sort type
+        function setSortType(sortType) {
+            gameState.currentSort = sortType;
+            
+            // Update active button
+            sortButtons.forEach(btn => {
+                if (btn.dataset.sort === sortType) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            renderInventory();
+        }
+
+        // Show reveal overlay
+        function showRevealOverlay(item) {
+            revealImg.src = item.image;
+            revealName.textContent = item.name;
+            revealRarity.textContent = item.rarity.toUpperCase();
+            revealRarity.style.color = rarityColors[item.rarity];
+            
+            revealOverlay.classList.add('active');
+            
+            // Add particle effects based on rarity
+            if (item.rarity === 'rare') {
+                createParticles(50, rarityColors[item.rarity]);
+            } else if (item.rarity === 'epic') {
+                createParticles(100, rarityColors[item.rarity]);
+            } else if (item.rarity === 'legendary') {
+                createParticles(200, rarityColors[item.rarity]);
+            }
+        }
+
+        // Close reveal overlay
+        function closeRevealOverlay() {
+            revealOverlay.classList.remove('active');
+        }
+
+        // Create particles
+        function createParticles(count, color = rarityColors.legendary) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 8 + 2;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                const speedX = (Math.random() - 0.5) * 10;
+                const speedY = Math.random() * -15 - 5;
+                const rotation = Math.random() * 360;
+                const duration = Math.random() * 2 + 1;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}px`;
+                particle.style.top = `${posY}px`;
+                particle.style.backgroundColor = color;
+                particle.style.transform = `rotate(${rotation}deg)`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                const keyframes = [
+                    { opacity: 0, transform: `translate(0, 0) rotate(${rotation}deg)` },
+                    { opacity: 1, transform: `translate(${speedX}px, ${speedY * 0.3}px) rotate(${rotation + 45}deg)` },
+                    { opacity: 0, transform: `translate(${speedX * 2}px, ${speedY}px) rotate(${rotation + 90}deg)` }
+                ];
+                
+                const animation = particle.animate(keyframes, {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                
+                animation.onfinish = () => {
+                    particle.remove();
+                };
+            }
+        }
+
+        // Add extra packs (for testing)
+        function addPacks(amount) {
+            gameState.packs += amount;
+            updateStats();
+        }
+
+        // Load saved game
+        function loadGame() {
+            const savedGame = localStorage.getItem('pixelBlockGacha');
+            if (savedGame) {
+                try {
+                    const parsedGame = JSON.parse(savedGame);
+                    gameState.inventory = parsedGame.inventory || [];
+                    gameState.packs = parsedGame.packs || 5;
+                    updateStats();
+                    renderInventory();
+                } catch (e) {
+                    console.error('Failed to load saved game:', e);
+                }
+            }
+        }
+
+        // Save game
+        function saveGame() {
+            try {
+                localStorage.setItem('pixelBlockGacha', JSON.stringify({
+                    inventory: gameState.inventory,
+                    packs: gameState.packs
+                }));
+            } catch (e) {
+                console.error('Failed to save game:', e);
+            }
+        }
+
+        // Auto-save game every minute
+        setInterval(saveGame, 60000);
+
+        // Save game before page unload
+        window.addEventListener('beforeunload', saveGame);
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGame();
+            initGame();
+        });
+
+        // Cheat code for testing (add 10 packs)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyP') {
+                addPacks(10);
+            }
+        });
+    </script>
+</body>
+</html>
    
