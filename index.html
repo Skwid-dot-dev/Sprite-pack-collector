@@ -915,4 +915,636 @@
                         builderState.selectedBlock = null;
                         
                         // Clear selection UI
-                        const selectedEl = document
+                        const selectedEl = document.querySelector('.palette-item.selected');
+                        if (selectedEl) {
+                            selectedEl.classList.remove('selected');
+                        }
+                    }
+                }
+                
+                // Update UI counters
+                updateUICounters();
+                
+                // Update palette display
+                renderPalette();
+            }
+        }
+
+        // Initialize palette
+        function renderPalette() {
+            const paletteGrid = document.getElementById('palette-grid');
+            paletteGrid.innerHTML = '';
+            
+            // Filter blocks player has in inventory
+            const inventoryBlocks = gameState.inventory.filter(item => item.count > 0);
+            
+            if (inventoryBlocks.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = 'No blocks in inventory. Open packs to get blocks!';
+                emptyMsg.style.gridColumn = '1 / -1';
+                emptyMsg.style.color = 'white';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.style.padding = '20px';
+                paletteGrid.appendChild(emptyMsg);
+                return;
+            }
+            
+            // Create palette items
+            inventoryBlocks.forEach(item => {
+                const block = pixelBlocks.find(b => b.id === item.id);
+                if (!block) return;
+                
+                const paletteItem = document.createElement('div');
+                paletteItem.className = 'palette-item';
+                if (builderState.selectedBlock === block.id) {
+                    paletteItem.classList.add('selected');
+                }
+                
+                const img = document.createElement('img');
+                img.src = block.image;
+                img.alt = block.name;
+                paletteItem.appendChild(img);
+                
+                const count = document.createElement('span');
+                count.className = 'palette-item-count';
+                count.textContent = item.count;
+                paletteItem.appendChild(count);
+                
+                const rarity = document.createElement('span');
+                rarity.className = 'palette-item-rarity';
+                rarity.style.backgroundColor = rarityColors[block.rarity];
+                paletteItem.appendChild(rarity);
+                
+                // Add tooltip with block name
+                paletteItem.title = block.name;
+                
+                // Add click event
+                paletteItem.addEventListener('click', () => {
+                    // Clear previous selection
+                    const selectedEl = document.querySelector('.palette-item.selected');
+                    if (selectedEl) {
+                        selectedEl.classList.remove('selected');
+                    }
+                    
+                    // Set new selection
+                    builderState.selectedBlock = block.id;
+                    paletteItem.classList.add('selected');
+                });
+                
+                paletteGrid.appendChild(paletteItem);
+            });
+        }
+
+        // Save design
+        function saveDesign() {
+            // Create preview snapshot (placeholder for actual rendering)
+            const previewUrl = '/api/placeholder/200/120'; // Placeholder for actual preview generation
+            
+            const designName = prompt('Enter a name for your design:', `Design ${builderState.savedDesigns.length + 1}`);
+            
+            if (!designName) return; // User cancelled
+            
+            const design = {
+                id: Date.now(),
+                name: designName,
+                date: new Date().toLocaleDateString(),
+                preview: previewUrl,
+                grid: JSON.parse(JSON.stringify(builderState.grid))
+            };
+            
+            builderState.savedDesigns.push(design);
+            
+            // Save to local storage
+            localStorage.setItem('savedDesigns', JSON.stringify(builderState.savedDesigns));
+            
+            // Refresh saved designs display
+            renderSavedDesigns();
+        }
+
+        // Render saved designs
+        function renderSavedDesigns() {
+            const savedDesignsGrid = document.getElementById('saved-designs-grid');
+            savedDesignsGrid.innerHTML = '';
+            
+            if (builderState.savedDesigns.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = 'No saved designs yet. Create and save your first design!';
+                emptyMsg.style.gridColumn = '1 / -1';
+                emptyMsg.style.color = 'white';
+                emptyMsg.style.textAlign = 'center';
+                emptyMsg.style.padding = '20px';
+                savedDesignsGrid.appendChild(emptyMsg);
+                return;
+            }
+            
+            builderState.savedDesigns.forEach(design => {
+                const designEl = document.createElement('div');
+                designEl.className = 'saved-design';
+                
+                const preview = document.createElement('div');
+                preview.className = 'saved-design-preview';
+                
+                const img = document.createElement('img');
+                img.src = design.preview;
+                img.alt = design.name;
+                preview.appendChild(img);
+                
+                const name = document.createElement('div');
+                name.className = 'saved-design-name';
+                name.textContent = design.name;
+                
+                const date = document.createElement('div');
+                date.className = 'saved-design-date';
+                date.textContent = design.date;
+                
+                designEl.appendChild(preview);
+                designEl.appendChild(name);
+                designEl.appendChild(date);
+                
+                // Add click event to load design
+                designEl.addEventListener('click', () => {
+                    loadDesign(design.id);
+                });
+                
+                savedDesignsGrid.appendChild(designEl);
+            });
+        }
+
+        // Load design
+        function loadDesign(designId) {
+            const design = builderState.savedDesigns.find(d => d.id === designId);
+            if (!design) return;
+            
+            // Confirm before loading
+            if (!confirm(`Load design "${design.name}"? Any unsaved changes will be lost.`)) {
+                return;
+            }
+            
+            // Load design grid
+            builderState.grid = JSON.parse(JSON.stringify(design.grid));
+            
+            // Render updated grid
+            renderIsometricGrid();
+        }
+
+        // Game state (for the overall app)
+        const gameState = {
+            packs: 5,
+            inventory: [
+                // Starting inventory for demo
+                { id: 1, count: 10 }, // Grass blocks
+                { id: 2, count: 8 },  // Stone blocks
+                { id: 3, count: 5 },  // Ice blocks
+                { id: 4, count: 3 }   // Wooden crates
+            ],
+            totalItems: 26,
+            rareItems: 0
+        };
+
+        // Update UI counters
+        function updateUICounters() {
+            document.getElementById('pack-count').textContent = gameState.packs;
+            document.getElementById('item-count').textContent = gameState.totalItems;
+            document.getElementById('rare-count').textContent = gameState.rareItems;
+        }
+
+        // Tab switching functionality
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    btn.classList.add('active');
+                    document.getElementById(btn.dataset.tab).classList.add('active');
+                });
+            });
+        }
+
+        // Grid size buttons
+        function setupGridSizeButtons() {
+            const sizeButtons = document.querySelectorAll('.grid-size-btn');
+            
+            sizeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all size buttons
+                    sizeButtons.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Update grid size
+                    const size = parseInt(btn.dataset.size);
+                    initGrid(size);
+                });
+            });
+        }
+
+        // Clear grid button
+        function setupClearButton() {
+            const clearBtn = document.getElementById('clear-grid-btn');
+            
+            clearBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear the grid? This action cannot be undone.')) {
+                    // Return blocks to inventory
+                    builderState.grid.forEach(cell => {
+                        if (cell.blockId !== null) {
+                            updateInventoryCount(cell.blockId, 1);
+                            cell.blockId = null;
+                        }
+                    });
+                    
+                    // Re-render grid
+                    renderIsometricGrid();
+                    
+                    // Update palette
+                    renderPalette();
+                }
+            });
+        }
+
+        // Save design button
+        function setupSaveButton() {
+            const saveBtn = document.getElementById('save-design-btn');
+            
+            saveBtn.addEventListener('click', () => {
+                saveDesign();
+            });
+        }
+
+        // Initialize the gacha tab content
+        function initGachaTab() {
+            const gachaTab = document.getElementById('gacha-tab');
+            
+            // Create pack opening section
+            const packSection = document.createElement('div');
+            packSection.className = 'level-builder-section';
+            packSection.style.borderColor = 'var(--neon-pink)';
+            packSection.style.boxShadow = '0 0 15px var(--neon-pink)';
+            
+            const packHeader = document.createElement('div');
+            packHeader.className = 'level-builder-header';
+            packHeader.style.borderColor = 'var(--neon-pink)';
+            
+            const packTitle = document.createElement('h2');
+            packTitle.className = 'level-builder-title';
+            packTitle.textContent = 'PIXEL PACKS';
+            packTitle.style.textShadow = '0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink)';
+            
+            packHeader.appendChild(packTitle);
+            packSection.appendChild(packHeader);
+            
+            // Pack display
+            const packDisplay = document.createElement('div');
+            packDisplay.style.display = 'flex';
+            packDisplay.style.justifyContent = 'center';
+            packDisplay.style.padding = '30px';
+            
+            const packImage = document.createElement('div');
+            packImage.style.width = '200px';
+            packImage.style.height = '250px';
+            packImage.style.background = 'url("/api/placeholder/200/250") center/cover';
+            packImage.style.border = '3px solid var(--neon-pink)';
+            packImage.style.borderRadius = '10px';
+            packImage.style.boxShadow = '0 0 20px var(--neon-pink)';
+            packImage.style.cursor = 'pointer';
+            packImage.style.transition = 'all 0.3s';
+            
+            packImage.addEventListener('mouseover', () => {
+                packImage.style.transform = 'scale(1.05)';
+            });
+            
+            packImage.addEventListener('mouseout', () => {
+                packImage.style.transform = 'scale(1)';
+            });
+            
+            // Click event for opening packs
+            packImage.addEventListener('click', () => {
+                openPack();
+            });
+            
+            packDisplay.appendChild(packImage);
+            packSection.appendChild(packDisplay);
+            
+            // Pack opening button
+            const openPackBtn = document.createElement('button');
+            openPackBtn.className = 'tool-btn save-btn';
+            openPackBtn.textContent = 'OPEN PACK';
+            openPackBtn.style.display = 'block';
+            openPackBtn.style.margin = '20px auto';
+            openPackBtn.style.background = 'linear-gradient(135deg, #ff00ff, #9d00ff)';
+            openPackBtn.style.boxShadow = '0 0 10px var(--neon-pink)';
+            
+            openPackBtn.addEventListener('click', () => {
+                openPack();
+            });
+            
+            packSection.appendChild(openPackBtn);
+            gachaTab.appendChild(packSection);
+            
+            // Recently opened section
+            const recentSection = document.createElement('div');
+            recentSection.className = 'palette-section';
+            recentSection.id = 'recent-pulls-section';
+            recentSection.style.borderColor = 'var(--neon-purple)';
+            recentSection.style.boxShadow = '0 0 15px var(--neon-purple)';
+            
+            const recentHeader = document.createElement('h2');
+            recentHeader.className = 'palette-header';
+            recentHeader.textContent = 'RECENT PULLS';
+            recentHeader.style.borderColor = 'var(--neon-purple)';
+            recentHeader.style.textShadow = '0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple)';
+            
+            recentSection.appendChild(recentHeader);
+            
+            const recentPulls = document.createElement('div');
+            recentPulls.className = 'palette-grid';
+            recentPulls.id = 'recent-pulls-grid';
+            recentPulls.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 20px;">No recent pulls. Open a pack to get started!</p>';
+            
+            recentSection.appendChild(recentPulls);
+            gachaTab.appendChild(recentSection);
+        }
+
+        // Initialize the inventory tab content
+        function initInventoryTab() {
+            const inventoryTab = document.getElementById('inventory-tab');
+            
+            // Create inventory display section
+            const inventorySection = document.createElement('div');
+            inventorySection.className = 'level-builder-section';
+            inventorySection.style.gridColumn = '1 / -1';
+            inventorySection.style.borderColor = 'var(--neon-blue)';
+            inventorySection.style.boxShadow = '0 0 15px var(--neon-blue)';
+            
+            const inventoryHeader = document.createElement('div');
+            inventoryHeader.className = 'level-builder-header';
+            inventoryHeader.style.borderColor = 'var(--neon-blue)';
+            
+            const inventoryTitle = document.createElement('h2');
+            inventoryTitle.className = 'level-builder-title';
+            inventoryTitle.textContent = 'BLOCK INVENTORY';
+            inventoryTitle.style.textShadow = '0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue)';
+            
+            // Filter controls
+            const filterControls = document.createElement('div');
+            filterControls.className = 'level-builder-controls';
+            
+            const rarityFilter = document.createElement('select');
+            rarityFilter.className = 'builder-btn';
+            rarityFilter.innerHTML = `
+                <option value="all">All Rarities</option>
+                <option value="common">Common</option>
+                <option value="uncommon">Uncommon</option>
+                <option value="rare">Rare</option>
+                <option value="epic">Epic</option>
+                <option value="legendary">Legendary</option>
+            `;
+            
+            filterControls.appendChild(rarityFilter);
+            inventoryHeader.appendChild(inventoryTitle);
+            inventoryHeader.appendChild(filterControls);
+            inventorySection.appendChild(inventoryHeader);
+            
+            // Inventory grid
+            const inventoryGrid = document.createElement('div');
+            inventoryGrid.className = 'palette-grid';
+            inventoryGrid.id = 'inventory-grid';
+            inventoryGrid.style.maxHeight = '500px';
+            
+            inventorySection.appendChild(inventoryGrid);
+            inventoryTab.appendChild(inventorySection);
+            
+            // Add event listener for the filter
+            rarityFilter.addEventListener('change', renderInventory);
+            
+            // Initial render
+            renderInventory();
+            
+            function renderInventory() {
+                const selectedRarity = rarityFilter.value;
+                const inventoryGrid = document.getElementById('inventory-grid');
+                inventoryGrid.innerHTML = '';
+                
+                // Get inventory items
+                const inventoryItems = gameState.inventory.filter(item => item.count > 0);
+                
+                if (inventoryItems.length === 0) {
+                    const emptyMsg = document.createElement('p');
+                    emptyMsg.textContent = 'Your inventory is empty. Open packs to get blocks!';
+                    emptyMsg.style.gridColumn = '1 / -1';
+                    emptyMsg.style.textAlign = 'center';
+                    emptyMsg.style.padding = '20px';
+                    inventoryGrid.appendChild(emptyMsg);
+                    return;
+                }
+                
+                // Filter by rarity if needed
+                let filteredItems = inventoryItems;
+                if (selectedRarity !== 'all') {
+                    filteredItems = inventoryItems.filter(item => {
+                        const block = pixelBlocks.find(b => b.id === item.id);
+                        return block && block.rarity === selectedRarity;
+                    });
+                    
+                    if (filteredItems.length === 0) {
+                        const emptyMsg = document.createElement('p');
+                        emptyMsg.textContent = `No ${selectedRarity} blocks in your inventory.`;
+                        emptyMsg.style.gridColumn = '1 / -1';
+                        emptyMsg.style.textAlign = 'center';
+                        emptyMsg.style.padding = '20px';
+                        inventoryGrid.appendChild(emptyMsg);
+                        return;
+                    }
+                }
+                
+                // Create inventory items
+                filteredItems.forEach(item => {
+                    const block = pixelBlocks.find(b => b.id === item.id);
+                    if (!block) return;
+                    
+                    const inventoryItem = document.createElement('div');
+                    inventoryItem.className = 'palette-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = block.image;
+                    img.alt = block.name;
+                    inventoryItem.appendChild(img);
+                    
+                    const count = document.createElement('span');
+                    count.className = 'palette-item-count';
+                    count.textContent = item.count;
+                    inventoryItem.appendChild(count);
+                    
+                    const rarity = document.createElement('span');
+                    rarity.className = 'palette-item-rarity';
+                    rarity.style.backgroundColor = rarityColors[block.rarity];
+                    inventoryItem.appendChild(rarity);
+                    
+                    // Item details on hover
+                    inventoryItem.title = `${block.name} (${block.rarity})`;
+                    
+                    inventoryGrid.appendChild(inventoryItem);
+                });
+            }
+        }
+
+        // Open a pixel block pack
+        function openPack() {
+            if (gameState.packs <= 0) {
+                alert('No packs available! Please buy more packs.');
+                return;
+            }
+            
+            // Decrease pack count
+            gameState.packs--;
+            
+            // Generate 5 random blocks
+            const pulls = [];
+            for (let i = 0; i < 5; i++) {
+                const block = getRandomBlock();
+                pulls.push(block);
+                
+                // Add to inventory
+                addBlockToInventory(block.id);
+                
+                // Count rare items
+                if (block.rarity === 'rare' || block.rarity === 'epic' || block.rarity === 'legendary') {
+                    gameState.rareItems++;
+                }
+            }
+            
+            // Update UI
+            updateUICounters();
+            displayRecentPulls(pulls);
+            renderPalette();
+            
+            // If inventory tab is initialized, update it
+            if (document.getElementById('inventory-grid')) {
+                renderInventory();
+            }
+        }
+
+        // Get a random block based on rarity
+        function getRandomBlock() {
+            // Rarity chances
+            const rarityChances = {
+                common: 60,     // 60%
+                uncommon: 25,   // 25%
+                rare: 10,       // 10%
+                epic: 4,        // 4%
+                legendary: 1    // 1%
+            };
+            
+            // Determine rarity
+            const roll = Math.random() * 100;
+            let cumulativeChance = 0;
+            let selectedRarity = 'common';
+            
+            for (const [rarity, chance] of Object.entries(rarityChances)) {
+                cumulativeChance += chance;
+                if (roll <= cumulativeChance) {
+                    selectedRarity = rarity;
+                    break;
+                }
+            }
+            
+            // Get blocks of the selected rarity
+            const rarityBlocks = pixelBlocks.filter(block => block.rarity === selectedRarity);
+            
+            // If no blocks of this rarity, fall back to common
+            if (rarityBlocks.length === 0) {
+                return pixelBlocks.find(block => block.rarity === 'common');
+            }
+            
+            // Return a random block of the selected rarity
+            return rarityBlocks[Math.floor(Math.random() * rarityBlocks.length)];
+        }
+
+        // Add block to inventory
+        function addBlockToInventory(blockId) {
+            const existingItem = gameState.inventory.find(item => item.id === blockId);
+            
+            if (existingItem) {
+                existingItem.count++;
+            } else {
+                gameState.inventory.push({
+                    id: blockId,
+                    count: 1
+                });
+            }
+            
+            gameState.totalItems++;
+        }
+
+        // Display recent pulls
+        function displayRecentPulls(pulls) {
+            const recentPullsGrid = document.getElementById('recent-pulls-grid');
+            if (!recentPullsGrid) return;
+            
+            recentPullsGrid.innerHTML = '';
+            
+            pulls.forEach(block => {
+                const pullItem = document.createElement('div');
+                pullItem.className = 'palette-item';
+                pullItem.style.animation = 'blockAdd 0.5s forwards';
+                
+                const img = document.createElement('img');
+                img.src = block.image;
+                img.alt = block.name;
+                pullItem.appendChild(img);
+                
+                const rarity = document.createElement('span');
+                rarity.className = 'palette-item-rarity';
+                rarity.style.backgroundColor = rarityColors[block.rarity];
+                pullItem.appendChild(rarity);
+                
+                // Item details on hover
+                pullItem.title = `${block.name} (${block.rarity})`;
+                
+                recentPullsGrid.appendChild(pullItem);
+            });
+        }
+
+        // Initialize the app
+        function init() {
+            // Load saved designs from local storage
+            const savedDesigns = localStorage.getItem('savedDesigns');
+            if (savedDesigns) {
+                builderState.savedDesigns = JSON.parse(savedDesigns);
+            }
+            
+            // Initialize grid
+            initGrid(builderState.gridSize);
+            
+            // Initialize tabs
+            setupTabs();
+            setupGridSizeButtons();
+            setupClearButton();
+            setupSaveButton();
+            
+            // Initialize gacha and inventory tabs
+            initGachaTab();
+            initInventoryTab();
+            
+            // Render block palette
+            renderPalette();
+            
+            // Render saved designs
+            renderSavedDesigns();
+            
+            // Update UI counters
+            updateUICounters();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+                
+                
