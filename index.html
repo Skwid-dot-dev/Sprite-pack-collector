@@ -392,6 +392,175 @@
             font-size: 0.8rem;
         }
 
+        .world-builder-section {
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(10, 0, 41, 0.6);
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .world-builder-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--neon-pink);
+        }
+        
+        .world-builder-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink);
+        }
+        
+        .grid-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .grid-btn {
+            padding: 8px 15px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid var(--neon-pink);
+            border-radius: 20px;
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .grid-btn:hover {
+            background: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 8px var(--neon-pink);
+        }
+        
+        .grid-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid var(--neon-purple);
+        }
+        
+        .diamond-grid {
+            position: relative;
+            width: 2000px;
+            height: 2000px;
+            transform-origin: 0 0;
+            transform: scale(1);
+        }
+        
+        .grid-cell {
+            position: absolute;
+            width: 64px;
+            height: 32px;
+            transform: rotateX(60deg) rotateZ(45deg);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .grid-cell:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .grid-cell.has-block {
+            background: rgba(0, 0, 0, 0);
+            border: none;
+        }
+        
+        .placed-block {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            transform: translate(-8px, -48px);
+            pointer-events: none;
+            image-rendering: pixelated;
+            transition: all 0.2s;
+        }
+        
+        .block-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            max-width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid var(--neon-purple);
+        }
+        
+        .block-option {
+            width: 50px;
+            height: 50px;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            image-rendering: pixelated;
+        }
+        
+        .block-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .block-option.selected {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+        
+        .block-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .world-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .world-btn {
+            padding: 8px 15px;
+            background: rgba(157, 0, 255, 0.2);
+            border: 1px solid var(--neon-purple);
+            border-radius: 20px;
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .world-btn:hover {
+            background: rgba(157, 0, 255, 0.4);
+            box-shadow: 0 0 8px var(--neon-purple);
+        }
+        
+        /* Add this to your media queries section */
+        @media (max-width: 767px) {
+            .block-selector {
+                max-height: 150px;
+                overflow-y: auto;
+            }
+        }
         /* REVEAL OVERLAY */
         .reveal-overlay {
             position: fixed;
@@ -655,6 +824,29 @@
         
         <div class="particles-container" id="particles-container"></div>
     </div>
+    div class="world-builder-section">
+            <div class="world-builder-header">
+                <h2 class="world-builder-title">WORLD BUILDER</h2>
+                <div class="grid-controls">
+                    <button class="grid-btn" id="zoom-in">ZOOM +</button>
+                    <button class="grid-btn" id="zoom-out">ZOOM -</button>
+                    <button class="grid-btn" id="reset-view">RESET</button>
+                </div>
+            </div>
+            <div class="grid-container" id="grid-container">
+                <div class="diamond-grid" id="diamond-grid">
+                    <!-- Grid cells will be generated here -->
+                </div>
+            </div>
+            <div class="block-selector" id="block-selector">
+                <!-- Block options will be added here -->
+            </div>
+            <div class="world-controls">
+                <button class="world-btn" id="clear-grid">CLEAR GRID</button>
+                <button class="world-btn" id="save-world">SAVE WORLD</button>
+            </div>
+        </div>
+</div>
 
     <script>
         // Define pixel block asset data
@@ -1055,6 +1247,383 @@
                 console.error('Failed to save game:', e);
             }
         }
+
+        // World builder state
+        const worldState = {
+            gridSize: 10,
+            scale: 1,
+            selectedBlockId: null,
+            blocks: {} // To store placed blocks
+        };
+        
+        // Additional DOM elements
+        const gridContainer = document.getElementById('grid-container');
+        const diamondGrid = document.getElementById('diamond-grid');
+        const blockSelector = document.getElementById('block-selector');
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const resetViewBtn = document.getElementById('reset-view');
+        const clearGridBtn = document.getElementById('clear-grid');
+        const saveWorldBtn = document.getElementById('save-world');
+        
+        // Initialize the diamond grid
+        function initDiamondGrid() {
+            // Clear existing grid
+            diamondGrid.innerHTML = '';
+            
+            // Calculate grid size and cell dimensions
+            const cellWidth = 64; // Width of each cell
+            const cellHeight = 32; // Height of each cell
+            
+            // Create grid cells
+            for (let row = 0; row < worldState.gridSize; row++) {
+                for (let col = 0; col < worldState.gridSize; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    
+                    // Position the cell in isometric grid
+                    // In isometric view, the x-coordinate is affected by both row and col
+                    // and the y-coordinate is affected by both row and col
+                    const x = (col - row) * (cellWidth / 2);
+                    const y = (col + row) * (cellHeight / 2);
+                    
+                    cell.style.left = `${x + 1000 - (cellWidth / 2)}px`; // Center in the 2000px container
+                    cell.style.top = `${y + 500}px`;
+                    
+                    // Add click event to place a block
+                    cell.addEventListener('click', () => placeBlock(row, col));
+                    
+                    diamondGrid.appendChild(cell);
+                }
+            }
+            
+            // Initialize the block selector
+            initBlockSelector();
+            
+            // If we have saved blocks, place them
+            restoreBlocks();
+        }
+        
+        // Initialize the block selector
+        function initBlockSelector() {
+            blockSelector.innerHTML = '';
+            
+            // Add each block from inventory to the selector
+            gameState.inventory.forEach(item => {
+                if (item.count > 0) {
+                    const blockOption = document.createElement('div');
+                    blockOption.className = 'block-option';
+                    blockOption.dataset.blockId = item.id;
+                    
+                    const img = document.createElement('img');
+                    img.src = item.image;
+                    img.alt = item.name;
+                    
+                    blockOption.appendChild(img);
+                    blockOption.addEventListener('click', () => selectBlock(item.id));
+                    
+                    blockSelector.appendChild(blockOption);
+                }
+            });
+            
+            // If no blocks available, show message
+            if (gameState.inventory.length === 0) {
+                const noBlocksMsg = document.createElement('div');
+                noBlocksMsg.textContent = 'Open packs to collect blocks!';
+                noBlocksMsg.style.color = 'white';
+                blockSelector.appendChild(noBlocksMsg);
+            }
+        }
+        
+        // Select a block to place
+        function selectBlock(blockId) {
+            worldState.selectedBlockId = blockId;
+            
+            // Update UI
+            document.querySelectorAll('.block-option').forEach(option => {
+                if (option.dataset.blockId == blockId) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+        
+        // Place a block on the grid
+        function placeBlock(row, col) {
+            const key = `${row}-${col}`;
+            
+            // If no block selected, return
+            if (!worldState.selectedBlockId) {
+                alert('Select a block from your inventory first!');
+                return;
+            }
+            
+            // Find the selected block in inventory
+            const blockItem = gameState.inventory.find(item => item.id == worldState.selectedBlockId);
+            
+            // If the block exists and we have at least one
+            if (blockItem && blockItem.count > 0) {
+                // If there's already a block at this position, remove it first
+                if (worldState.blocks[key]) {
+                    removeBlock(row, col);
+                }
+                
+                // Place the new block
+                worldState.blocks[key] = {
+                    id: blockItem.id,
+                    image: blockItem.image,
+                    name: blockItem.name
+                };
+                
+                // Add the block to the grid
+                renderBlock(row, col);
+                
+                // Use up one of the blocks (optional - remove if you want infinite blocks)
+                // blockItem.count--;
+                // updateStats();
+                // renderInventory();
+                
+                // Save the world state
+                saveWorldState();
+            }
+        }
+        
+        // Remove a block from the grid
+        function removeBlock(row, col) {
+            const key = `${row}-${col}`;
+            
+            // If there's a block at this position
+            if (worldState.blocks[key]) {
+                // Find the block in the DOM
+                const blockEl = document.querySelector(`.placed-block[data-position="${key}"]`);
+                
+                // Remove it if it exists
+                if (blockEl) {
+                    blockEl.remove();
+                }
+                
+                // Remove the block from the state
+                delete worldState.blocks[key];
+                
+                // Return the block to inventory (optional - remove if you want infinite blocks)
+                // const blockItem = gameState.inventory.find(item => item.id == worldState.blocks[key].id);
+                // if (blockItem) {
+                //     blockItem.count++;
+                //     updateStats();
+                //     renderInventory();
+                // }
+                
+                // Update the cell's class
+                const cell = document.querySelector(`.grid-cell[data-row="${row}"][data-col="${col}"]`);
+                if (cell) {
+                    cell.classList.remove('has-block');
+                }
+                
+                // Save the world state
+                saveWorldState();
+            }
+        }
+        
+        // Render a block on the grid
+        function renderBlock(row, col) {
+            const key = `${row}-${col}`;
+            const block = worldState.blocks[key];
+            
+            if (!block) return;
+            
+            // Get the corresponding cell
+            const cell = document.querySelector(`.grid-cell[data-row="${row}"][data-col="${col}"]`);
+            
+            if (cell) {
+                // Mark the cell as having a block
+                cell.classList.add('has-block');
+                
+                // Create the block element
+                const blockEl = document.createElement('img');
+                blockEl.className = 'placed-block';
+                blockEl.src = block.image;
+                blockEl.alt = block.name;
+                blockEl.dataset.position = key;
+                
+                // Position the block at the cell's position
+                const cellRect = cell.getBoundingClientRect();
+                const gridRect = diamondGrid.getBoundingClientRect();
+                
+                // Place the block element in the grid
+                diamondGrid.appendChild(blockEl);
+                
+                // Position based on the cell's position (which is already in isometric coordinates)
+                blockEl.style.left = cell.style.left;
+                blockEl.style.top = cell.style.top;
+            }
+        }
+        
+        // Save the world state to localStorage
+        function saveWorldState() {
+            try {
+                localStorage.setItem('pixelBlockWorld', JSON.stringify(worldState.blocks));
+            } catch (e) {
+                console.error('Failed to save world:', e);
+            }
+        }
+        
+        // Load the world state from localStorage
+        function loadWorldState() {
+            try {
+                const savedWorld = localStorage.getItem('pixelBlockWorld');
+                if (savedWorld) {
+                    worldState.blocks = JSON.parse(savedWorld);
+                }
+            } catch (e) {
+                console.error('Failed to load world:', e);
+                worldState.blocks = {};
+            }
+        }
+        
+        // Restore blocks from saved state
+        function restoreBlocks() {
+            loadWorldState();
+            
+            // Render each saved block
+            for (const key in worldState.blocks) {
+                const [row, col] = key.split('-').map(Number);
+                renderBlock(row, col);
+            }
+        }
+        
+        // Zoom controls
+        function setupZoomControls() {
+            zoomInBtn.addEventListener('click', () => {
+                if (worldState.scale < 2) {
+                    worldState.scale += 0.2;
+                    updateZoom();
+                }
+            });
+            
+            zoomOutBtn.addEventListener('click', () => {
+                if (worldState.scale > 0.4) {
+                    worldState.scale -= 0.2;
+                    updateZoom();
+                }
+            });
+            
+            resetViewBtn.addEventListener('click', () => {
+                worldState.scale = 1;
+                updateZoom();
+                gridContainer.scrollTo({
+                    top: 500,
+                    left: 1000 - (gridContainer.clientWidth / 2),
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Update the zoom level
+        function updateZoom() {
+            diamondGrid.style.transform = `scale(${worldState.scale})`;
+        }
+        
+        // Clear the grid
+        function clearGrid() {
+            if (confirm('Are you sure you want to clear your world?')) {
+                worldState.blocks = {};
+                diamondGrid.querySelectorAll('.placed-block').forEach(block => block.remove());
+                diamondGrid.querySelectorAll('.grid-cell').forEach(cell => cell.classList.remove('has-block'));
+                saveWorldState();
+            }
+        }
+        
+        // Update the block selector when inventory changes
+        function updateBlockSelector() {
+            initBlockSelector();
+        }
+        
+        // Extend the original initialization function
+        const originalInitGame = initGame;
+        initGame = function() {
+            originalInitGame();
+            
+            // Initialize the diamond grid
+            initDiamondGrid();
+            setupZoomControls();
+            
+            // Add event listeners for grid controls
+            clearGridBtn.addEventListener('click', clearGrid);
+            saveWorldBtn.addEventListener('click', saveWorldState);
+            
+            // Center the grid view
+            setTimeout(() => {
+                gridContainer.scrollTo({
+                    top: 500,
+                    left: 1000 - (gridContainer.clientWidth / 2)
+                });
+            }, 100);
+        };
+        
+        // Override the original addItemToInventory function to update block selector
+        const originalAddItemToInventory = addItemToInventory;
+        addItemToInventory = function(item) {
+            originalAddItemToInventory(item);
+            updateBlockSelector();
+        };
+        
+        // Override the original renderInventory function to update block selector
+        const originalRenderInventory = renderInventory;
+        renderInventory = function() {
+            originalRenderInventory();
+            updateBlockSelector();
+        };
+        
+        // Make the diamond grid draggable for navigation
+        function makeGridDraggable() {
+            let isDragging = false;
+            let startX, startY;
+            let scrollLeft, scrollTop;
+            
+            gridContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.pageX - gridContainer.offsetLeft;
+                startY = e.pageY - gridContainer.offsetTop;
+                scrollLeft = gridContainer.scrollLeft;
+                scrollTop = gridContainer.scrollTop;
+                gridContainer.style.cursor = 'grabbing';
+            });
+            
+            gridContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
+                gridContainer.style.cursor = 'grab';
+            });
+            
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                gridContainer.style.cursor = 'grab';
+            });
+            
+            gridContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                
+                const x = e.pageX - gridContainer.offsetLeft;
+                const y = e.pageY - gridContainer.offsetTop;
+                
+                const walkX = (x - startX);
+                const walkY = (y - startY);
+                
+                gridContainer.scrollLeft = scrollLeft - walkX;
+                gridContainer.scrollTop = scrollTop - walkY;
+            });
+            
+            // Set initial cursor
+            gridContainer.style.cursor = 'grab';
+        }
+        
+        // Call this function to make the grid draggable
+        document.addEventListener('DOMContentLoaded', () => {
+            makeGridDraggable();
+        });
 
         // Auto-save game every minute
         setInterval(saveGame, 60000);
