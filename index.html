@@ -12,6 +12,7 @@
             --neon-blue: #00f0ff;
             --neon-purple: #9d00ff;
             --neon-yellow: #faff00;
+            --neon-green: #00ff66; 
             --dark-bg: #0a0029;
         }
 
@@ -121,147 +122,186 @@
             font-size: 1.8rem;
         }
 
+        /* TABS NAVIGATION */
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 30px;
+            margin: 0 5px;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.2rem;
+            color: white;
+            background: rgba(10, 0, 41, 0.7);
+            border: 2px solid var(--neon-purple);
+            border-radius: 30px 30px 0 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--neon-purple);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(157, 0, 255, 0.2);
+        }
+
+        .tab-btn:hover::after {
+            transform: scaleX(1);
+        }
+
+        .tab-btn.active {
+            background: rgba(157, 0, 255, 0.4);
+            box-shadow: 0 0 15px var(--neon-purple);
+            border-bottom: none;
+        }
+
+        .tab-btn.active::after {
+            transform: scaleX(1);
+            height: 4px;
+            background: var(--neon-yellow);
+        }
+
         /* MAIN CONTENT */
         .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* GACHA SECTION */
-        .gacha-section {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .tab-content.active {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* LEVEL BUILDER SECTION */
+        .level-builder-section {
+            padding: 30px;
             border-radius: 20px;
             background: rgba(10, 0, 41, 0.6);
             backdrop-filter: blur(5px);
-            border: 2px solid var(--neon-purple);
-            box-shadow: 0 0 15px var(--neon-purple);
-            overflow: hidden;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
         }
 
-        .gacha-section::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--neon-purple), var(--neon-yellow));
-            z-index: -1;
-            animation: border-animate 3s linear infinite;
-            border-radius: 22px;
-        }
-
-        .gacha-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin-bottom: 30px;
-            perspective: 1000px;
-        }
-
-        .gacha-pack {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .gacha-pack.opening {
-            animation: packOpen 1.2s forwards;
-        }
-
-        .pack-front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #5b2de0, #9d00ff);
-            border-radius: 15px;
+        .level-builder-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            border: 4px solid var(--neon-yellow);
-            box-shadow: 
-                0 0 15px var(--neon-purple),
-                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--neon-green);
         }
 
-        .pack-logo {
+        .level-builder-title {
             font-family: 'Russo One', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
             color: white;
-            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green);
         }
 
-        .pack-shine {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            animation: shine 3s infinite;
+        .level-builder-controls {
+            display: flex;
+            gap: 10px;
         }
 
-        .pull-btn {
-            margin-top: 20px;
-            padding: 15px 50px;
-            font-family: 'Russo One', sans-serif;
-            font-size: 1.8rem;
+        .grid-size-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .builder-btn {
+            padding: 8px 15px;
+            background: rgba(0, 255, 102, 0.2);
+            border: 1px solid var(--neon-green);
+            border-radius: 20px;
             color: white;
-            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
-            border: none;
-            border-radius: 50px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
             cursor: pointer;
-            letter-spacing: 2px;
             transition: all 0.3s;
+        }
+
+        .builder-btn:hover {
+            background: rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+
+        /* ISOMETRIC GRID */
+        .isometric-view {
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px var(--neon-pink);
-        }
-
-        .pull-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.4) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            animation: button-shine 3s infinite;
+            height: 400px;
+            margin: 0 auto;
+            overflow: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
         }
 
-        .pull-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px var(--neon-pink);
+        .isometric-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg) rotateZ(45deg);
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
         }
 
-        .pull-btn:active {
-            transform: scale(0.95);
+        .iso-cell {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* INVENTORY SECTION */
-        .inventory-section {
+        .iso-cell:hover {
+            background: rgba(0, 255, 102, 0.3);
+            border: 1px solid var(--neon-green);
+        }
+
+        .iso-block {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transform: translateZ(20px);
+            transform-style: preserve-3d;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+
+        /* PALETTE SECTION */
+        .palette-section {
             padding: 30px;
             border-radius: 20px;
             background: rgba(10, 0, 41, 0.6);
@@ -270,232 +310,207 @@
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
-        .inventory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .palette-header {
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--neon-blue);
-        }
-
-        .inventory-title {
             font-family: 'Russo One', sans-serif;
             font-size: 2rem;
             color: white;
             text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
         }
 
-        .sort-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .sort-btn {
-            padding: 8px 15px;
-            background: rgba(0, 240, 255, 0.2);
-            border: 1px solid var(--neon-blue);
-            border-radius: 20px;
-            color: white;
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .sort-btn:hover {
-            background: rgba(0, 240, 255, 0.4);
-            box-shadow: 0 0 8px var(--neon-blue);
-        }
-
-        .sort-btn.active {
-            background: rgba(0, 240, 255, 0.6);
-            box-shadow: 0 0 12px var(--neon-blue);
-        }
-
-        .inventory-grid {
+        .palette-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-            max-height: 400px;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            max-height: 300px;
             overflow-y: auto;
             padding: 10px;
             scrollbar-width: thin;
             scrollbar-color: var(--neon-blue) var(--dark-bg);
         }
 
-        .inventory-grid::-webkit-scrollbar {
+        .palette-grid::-webkit-scrollbar {
             width: 8px;
         }
 
-        .inventory-grid::-webkit-scrollbar-track {
+        .palette-grid::-webkit-scrollbar-track {
             background: var(--dark-bg);
             border-radius: 10px;
         }
 
-        .inventory-grid::-webkit-scrollbar-thumb {
+        .palette-grid::-webkit-scrollbar-thumb {
             background: var(--neon-blue);
             border-radius: 10px;
         }
 
-        .item {
+        .palette-item {
             position: relative;
-            background-color: rgba(30, 10, 60, 0.8);
-            border: 2px solid var(--neon-purple);
-            border-radius: 10px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: all 0.3s;
+            padding: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
         }
 
-        .item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px var(--neon-purple);
+        .palette-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--neon-blue);
         }
 
-        .item img {
+        .palette-item.selected {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+            background: rgba(250, 255, 0, 0.1);
+        }
+
+        .palette-item img {
             width: 100%;
             height: auto;
-            margin-bottom: 8px;
             image-rendering: pixelated;
         }
 
-        .item-rarity {
+        .palette-item-count {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-        }
-
-        .item-name {
-            font-size: 0.9rem;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
-        }
-
-        .item-count {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
+            bottom: 2px;
+            right: 2px;
             background: rgba(0, 0, 0, 0.7);
             padding: 2px 4px;
             border-radius: 10px;
             font-size: 0.8rem;
         }
 
-        /* REVEAL OVERLAY */
-        .reveal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+        .palette-item-rarity {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* EDITOR TOOLS */
+        .editor-tools {
             display: flex;
             justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            margin-top: 20px;
+            gap: 15px;
         }
 
-        .reveal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .reveal-container {
-            position: relative;
-            width: 300px;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .item-reveal {
-            width: 200px;
-            height: 200px;
-            background-color: rgba(30, 10, 60, 0.9);
-            border: 3px solid var(--neon-yellow);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-shadow: 0 0 30px var(--neon-yellow);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .item-reveal img {
-            width: 80%;
-            height: auto;
-            margin-bottom: 20px;
-            image-rendering: pixelated;
-        }
-
-        .item-reveal-name {
+        .tool-btn {
+            padding: 10px 20px;
             font-family: 'Russo One', sans-serif;
-            font-size: 1.5rem;
-            color: white;
-            text-align: center;
-            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
-            margin-bottom: 10px;
-        }
-
-        .item-reveal-rarity {
             font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .close-reveal {
-            margin-top: 30px;
-            padding: 10px 30px;
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-            border: none;
-            border-radius: 30px;
-            color: white;
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .close-reveal:hover {
+        .save-btn {
+            background: linear-gradient(135deg, #00ff66, #00f0ff);
+            border: none;
+            color: white;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .save-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: 2px solid var(--neon-pink);
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* SAVED DESIGNS SECTION */
+        .saved-designs-section {
+            grid-column: 1 / -1;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(10, 0, 41, 0.6);
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--neon-yellow);
+            box-shadow: 0 0 15px var(--neon-yellow);
+            margin-top: 20px;
+        }
+
+        .saved-designs-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--neon-yellow);
+            font-family: 'Russo One', sans-serif;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow);
+        }
+
+        .saved-designs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .saved-design {
+            background: rgba(10, 0, 41, 0.8);
+            border: 2px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .saved-design:hover {
+            transform: translateY(-5px);
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
-        /* PARTICLES */
-        .particles-container {
-            position: absolute;
+        .saved-design-preview {
             width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 100;
+            height: 120px;
+            background: #000;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
 
-        .particle {
-            position: absolute;
-            background-color: var(--neon-yellow);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
+        .saved-design-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .saved-design-name {
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .saved-design-date {
+            font-size: 0.8rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animation for newly added blocks */
+        @keyframes blockAdd {
+            0% { transform: translateZ(-20px); opacity: 0; }
+            100% { transform: translateZ(20px); opacity: 1; }
+        }
+
+        .block-adding {
+            animation: blockAdd 0.3s forwards;
         }
 
         /* ANIMATIONS */
@@ -523,49 +538,12 @@
             100% { opacity: 0.3; }
         }
 
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
-        }
-
-        @keyframes button-shine {
-            0% { left: -100%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
-        }
-
         @keyframes moveGrid {
             0% { background-position: 0 0; }
             100% { background-position: 100px 100px; }
         }
 
-        @keyframes packOpen {
-            0% { transform: rotateY(0) scale(1); }
-            30% { transform: rotateY(180deg) scale(1.2); }
-            60% { transform: rotateY(180deg) scale(0); }
-            100% { transform: rotateY(0) scale(0); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes border-animate {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
-
         /* RESPONSIVE DESIGN */
-        @media (min-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
         @media (max-width: 767px) {
             h1 {
                 font-size: 3rem;
@@ -577,13 +555,22 @@
                 padding: 15px;
             }
             
-            .gacha-container {
-                width: 240px;
-                height: 240px;
+            .tab-content.active {
+                grid-template-columns: 1fr;
             }
             
-            .inventory-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            .tabs-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                font-size: 1rem;
+                padding: 8px 15px;
+                margin-bottom: 5px;
+            }
+            
+            .grid-size-control {
+                flex-direction: column;
             }
         }
     </style>
@@ -613,51 +600,67 @@
             </div>
         </header>
         
+        <div class="tabs-nav">
+            <button class="tab-btn" data-tab="gacha-tab">PACKS</button>
+            <button class="tab-btn" data-tab="inventory-tab">INVENTORY</button>
+            <button class="tab-btn active" data-tab="builder-tab">BUILDER</button>
+        </div>
+        
         <div class="main-content">
-            <div class="gacha-section">
-                <div class="gacha-container">
-                    <div class="gacha-pack" id="gacha-pack">
-                        <div class="pack-front">
-                            <div class="pack-shine"></div>
-                            <span class="pack-logo">PIXEL</span>
-                            <span class="pack-logo">BLOCK</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="pull-btn" id="pull-btn">OPEN PACK</button>
+            <!-- GACHA TAB -->
+            <div class="tab-content" id="gacha-tab">
+                <!-- Existing gacha content will be injected here -->
             </div>
             
-            <div class="inventory-section">
-                <div class="inventory-header">
-                    <h2 class="inventory-title">INVENTORY</h2>
-                    <div class="sort-controls">
-                        <button class="sort-btn active" data-sort="newest">NEWEST</button>
-                        <button class="sort-btn" data-sort="rarity">RARITY</button>
-                        <button class="sort-btn" data-sort="name">NAME</button>
+            <!-- INVENTORY TAB -->
+            <div class="tab-content" id="inventory-tab">
+                <!-- Existing inventory content will be injected here -->
+            </div>
+            
+            <!-- BUILDER TAB -->
+            <div class="tab-content active" id="builder-tab">
+                <div class="level-builder-section">
+                    <div class="level-builder-header">
+                        <h2 class="level-builder-title">LEVEL BUILDER</h2>
+                        <div class="level-builder-controls">
+                            <div class="grid-size-control">
+                                <span>Grid Size:</span>
+                                <button class="builder-btn grid-size-btn" data-size="8">8×8</button>
+                                <button class="builder-btn grid-size-btn active" data-size="10">10×10</button>
+                                <button class="builder-btn grid-size-btn" data-size="12">12×12</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="isometric-view">
+                        <div class="isometric-grid" id="isometric-grid">
+                            <!-- Grid cells will be dynamically generated -->
+                        </div>
+                    </div>
+                    <div class="editor-tools">
+                        <button class="tool-btn clear-btn" id="clear-grid-btn">CLEAR GRID</button>
+                        <button class="tool-btn save-btn" id="save-design-btn">SAVE DESIGN</button>
                     </div>
                 </div>
-                <div class="inventory-grid" id="inventory-grid">
-                    <!-- Items will be dynamically populated here -->
+                
+                <div class="palette-section">
+                    <h2 class="palette-header">BLOCK PALETTE</h2>
+                    <div class="palette-grid" id="palette-grid">
+                        <!-- Block palette items will be dynamically populated -->
+                    </div>
+                </div>
+                
+                <div class="saved-designs-section">
+                    <h2 class="saved-designs-header">SAVED DESIGNS</h2>
+                    <div class="saved-designs-grid" id="saved-designs-grid">
+                        <!-- Saved designs will be dynamically populated -->
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="reveal-overlay" id="reveal-overlay">
-            <div class="reveal-container">
-                <div class="item-reveal" id="item-reveal">
-                    <img src="" alt="item" id="reveal-img">
-                    <div class="item-reveal-name" id="reveal-name"></div>
-                    <div class="item-reveal-rarity" id="reveal-rarity"></div>
-                </div>
-                <button class="close-reveal" id="close-reveal">AWESOME!</button>
-            </div>
-        </div>
-        
-        <div class="particles-container" id="particles-container"></div>
     </div>
 
     <script>
-        // Define pixel block asset data
+        // Define pixel block asset data (using existing data from the original code)
         const pixelBlocks = [
             {
                 id: 1,
@@ -751,7 +754,7 @@
             }
         ];
 
-        // Rarity colors
+        // Rarity colors (using existing data)
         const rarityColors = {
             common: '#8d8d8d',
             uncommon: '#4de94c',
@@ -760,321 +763,156 @@
             legendary: '#ffaa00'
         };
 
-        // Rarity drop rates (out of 100)
-        const dropRates = {
-            common: 60,
-            uncommon: 25,
-            rare: 10,
-            epic: 4,
-            legendary: 1
+        // Level Builder State
+        const builderState = {
+            gridSize: 10,
+            selectedBlock: null,
+            grid: [],
+            savedDesigns: []
         };
 
-        // Game state
-        const gameState = {
-            inventory: [],
-            packs: 5,
-            currentSort: 'newest',
-            isAnimating: false
-        };
-
-        // DOM Elements
-        const packCountEl = document.getElementById('pack-count');
-        const itemCountEl = document.getElementById('item-count');
-        const rareCountEl = document.getElementById('rare-count');
-        const inventoryGrid = document.getElementById('inventory-grid');
-        const gachaPack = document.getElementById('gacha-pack');
-        const pullBtn = document.getElementById('pull-btn');
-        const revealOverlay = document.getElementById('reveal-overlay');
-        const closeReveal = document.getElementById('close-reveal');
-        const revealImg = document.getElementById('reveal-img');
-        const revealName = document.getElementById('reveal-name');
-        const revealRarity = document.getElementById('reveal-rarity');
-        const particlesContainer = document.getElementById('particles-container');
-        const sortButtons = document.querySelectorAll('.sort-btn');
-
-        // Initialize the game
-        function initGame() {
-            updateStats();
-            renderInventory();
+        // Initialize grid with empty cells
+        function initGrid(size) {
+            builderState.gridSize = size;
+            builderState.grid = [];
             
-            // Event listeners
-            pullBtn.addEventListener('click', openPack);
-            closeReveal.addEventListener('click', closeRevealOverlay);
-            
-            sortButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const sortType = e.target.dataset.sort;
-                    setSortType(sortType);
-                });
-            });
-        }
-
-        // Open a pack
-        function openPack() {
-            if (gameState.packs <= 0 || gameState.isAnimating) return;
-            
-            gameState.isAnimating = true;
-            gameState.packs--;
-            updateStats();
-            
-            // Play pack opening animation
-            gachaPack.classList.add('opening');
-            
-            // Create particles
-            createParticles(100);
-            
-            // Screen shake
-            document.body.classList.add('shake');
-            
-            // Determine the pull result
-            setTimeout(() => {
-                const pulledItem = getRandomItem();
-                addItemToInventory(pulledItem);
-                renderInventory();
-                showRevealOverlay(pulledItem);
-                
-                gachaPack.classList.remove('opening');
-                document.body.classList.remove('shake');
-                
-                gameState.isAnimating = false;
-            }, 1200);
-        }
-
-        // Get a random item based on rarity drop rates
-        function getRandomItem() {
-            const randomNum = Math.random() * 100;
-            let rarityThreshold = 0;
-            let selectedRarity = 'common';
-            
-            for (const [rarity, rate] of Object.entries(dropRates)) {
-                rarityThreshold += rate;
-                if (randomNum <= rarityThreshold) {
-                    selectedRarity = rarity;
-                    break;
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    builderState.grid.push({
+                        x: x,
+                        y: y,
+                        z: 0,
+                        blockId: null
+                    });
                 }
             }
             
-            // Filter items by selected rarity
-            const rarityItems = pixelBlocks.filter(item => item.rarity === selectedRarity);
-            
-            // Pick a random item from that rarity
-            return rarityItems[Math.floor(Math.random() * rarityItems.length)];
+            renderIsometricGrid();
         }
 
-        // Add item to inventory
-        function addItemToInventory(item) {
-            const existingItem = gameState.inventory.find(invItem => invItem.id === item.id);
+        // Render the isometric grid
+        function renderIsometricGrid() {
+            const gridEl = document.getElementById('isometric-grid');
+            gridEl.innerHTML = '';
             
-            if (existingItem) {
-                existingItem.count++;
-                existingItem.dateAdded = Date.now(); // Update date for sorting
-            } else {
-                gameState.inventory.push({
-                    ...item,
-                    count: 1,
-                    dateAdded: Date.now()
-                });
-            }
-        }
-
-        // Render inventory
-        function renderInventory() {
-            // Sort inventory
-            const sortedInventory = [...gameState.inventory].sort((a, b) => {
-                if (gameState.currentSort === 'newest') {
-                    return b.dateAdded - a.dateAdded;
-                } else if (gameState.currentSort === 'rarity') {
-                    const rarityOrder = { legendary: 5, epic: 4, rare: 3, uncommon: 2, common: 1 };
-                    return rarityOrder[b.rarity] - rarityOrder[a.rarity];
-                } else if (gameState.currentSort === 'name') {
-                    return a.name.localeCompare(b.name);
+            const gridSize = builderState.gridSize;
+            const cellSize = 40;
+            
+            // Calculate grid container dimensions
+            const gridWidth = gridSize * cellSize * Math.sqrt(2);
+            const gridHeight = gridSize * cellSize * Math.sqrt(2) / 2;
+            
+            gridEl.style.width = `${gridWidth}px`;
+            gridEl.style.height = `${gridHeight}px`;
+            
+            // Create grid cells
+            builderState.grid.forEach((cell, index) => {
+                const { x, y, blockId } = cell;
+                
+                // Create cell element
+                const cellEl = document.createElement('div');
+                cellEl.className = 'iso-cell';
+                cellEl.dataset.x = x;
+                cellEl.dataset.y = y;
+                cellEl.dataset.index = index;
+                
+                // Position cell in isometric space
+                const posX = (x - y) * (cellSize / 2);
+                const posY = (x + y) * (cellSize / 4);
+                
+                cellEl.style.left = `${posX + gridWidth/2}px`;
+                cellEl.style.top = `${posY + cellSize}px`;
+                cellEl.style.width = `${cellSize}px`;
+                cellEl.style.height = `${cellSize}px`;
+                
+                // Add click event
+                cellEl.addEventListener('click', () => handleCellClick(index));
+                
+                gridEl.appendChild(cellEl);
+                
+                // If cell has a block, display it
+                if (blockId !== null) {
+                    const block = pixelBlocks.find(b => b.id === blockId);
+                    if (block) {
+                        const blockEl = document.createElement('div');
+                        blockEl.className = 'iso-block';
+                        
+                        const img = document.createElement('img');
+                        img.src = block.image;
+                        img.alt = block.name;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        
+                        blockEl.appendChild(img);
+                        cellEl.appendChild(blockEl);
+                    }
                 }
-                return 0;
             });
             
-            // Clear inventory grid
-            inventoryGrid.innerHTML = '';
+            // Center the grid
+            const viewEl = document.querySelector('.isometric-view');
+            viewEl.scrollLeft = (gridEl.offsetWidth - viewEl.offsetWidth) / 2;
+            viewEl.scrollTop = (gridEl.offsetHeight - viewEl.offsetHeight) / 2;
+        }
+
+        // Handle cell click
+        function handleCellClick(index) {
+            if (builderState.selectedBlock === null) return;
             
-            // Add items to grid
-            sortedInventory.forEach(item => {
-                const itemEl = document.createElement('div');
-                itemEl.className = 'item';
-                
-                const rarityDot = document.createElement('div');
-                rarityDot.className = 'item-rarity';
-                rarityDot.style.backgroundColor = rarityColors[item.rarity];
+            const cell = builderState.grid[index];
+            const oldBlockId = cell.blockId;
+            
+            // Update cell with selected block
+            cell.blockId = builderState.selectedBlock;
+            
+            // Update the cell visually
+            const cellEl = document.querySelector(`.iso-cell[data-index="${index}"]`);
+            
+            // Remove existing block if any
+            const existingBlock = cellEl.querySelector('.iso-block');
+            if (existingBlock) {
+                cellEl.removeChild(existingBlock);
+            }
+            
+            // Add new block
+            const block = pixelBlocks.find(b => b.id === builderState.selectedBlock);
+            if (block) {
+                const blockEl = document.createElement('div');
+                blockEl.className = 'iso-block block-adding';
                 
                 const img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.name;
+                img.src = block.image;
+                img.alt = block.name;
+                img.style.width = '100%';
+                img.style.height = '100%';
                 
-                const name = document.createElement('div');
-                name.className = 'item-name';
-                name.textContent = item.name;
+                blockEl.appendChild(img);
+                cellEl.appendChild(blockEl);
                 
-                const count = document.createElement('div');
-                count.className = 'item-count';
-                count.textContent = `x${item.count}`;
-                
-                itemEl.appendChild(rarityDot);
-                itemEl.appendChild(img);
-                itemEl.appendChild(name);
-                itemEl.appendChild(count);
-                
-                inventoryGrid.appendChild(itemEl);
-            });
-        }
-
-        // Update game stats
-        function updateStats() {
-            packCountEl.textContent = gameState.packs;
-            
-            const totalItems = gameState.inventory.reduce((total, item) => total + item.count, 0);
-            itemCountEl.textContent = totalItems;
-            
-            const rareItems = gameState.inventory.reduce((total, item) => {
-                if (item.rarity === 'rare' || item.rarity === 'epic' || item.rarity === 'legendary') {
-                    return total + item.count;
-                }
-                return total;
-            }, 0);
-            rareCountEl.textContent = rareItems;
-        }
-
-        // Set sort type
-        function setSortType(sortType) {
-            gameState.currentSort = sortType;
-            
-            // Update active button
-            sortButtons.forEach(btn => {
-                if (btn.dataset.sort === sortType) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            renderInventory();
-        }
-
-        // Show reveal overlay
-        function showRevealOverlay(item) {
-            revealImg.src = item.image;
-            revealName.textContent = item.name;
-            revealRarity.textContent = item.rarity.toUpperCase();
-            revealRarity.style.color = rarityColors[item.rarity];
-            
-            revealOverlay.classList.add('active');
-            
-            // Add particle effects based on rarity
-            if (item.rarity === 'rare') {
-                createParticles(50, rarityColors[item.rarity]);
-            } else if (item.rarity === 'epic') {
-                createParticles(100, rarityColors[item.rarity]);
-            } else if (item.rarity === 'legendary') {
-                createParticles(200, rarityColors[item.rarity]);
-            }
-        }
-
-        // Close reveal overlay
-        function closeRevealOverlay() {
-            revealOverlay.classList.remove('active');
-        }
-
-        // Create particles
-        function createParticles(count, color = rarityColors.legendary) {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 8 + 2;
-                const posX = Math.random() * window.innerWidth;
-                const posY = Math.random() * window.innerHeight;
-                const speedX = (Math.random() - 0.5) * 10;
-                const speedY = Math.random() * -15 - 5;
-                const rotation = Math.random() * 360;
-                const duration = Math.random() * 2 + 1;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}px`;
-                particle.style.top = `${posY}px`;
-                particle.style.backgroundColor = color;
-                particle.style.transform = `rotate(${rotation}deg)`;
-                
-                particlesContainer.appendChild(particle);
-                
-                // Animate particle
-                const keyframes = [
-                    { opacity: 0, transform: `translate(0, 0) rotate(${rotation}deg)` },
-                    { opacity: 1, transform: `translate(${speedX}px, ${speedY * 0.3}px) rotate(${rotation + 45}deg)` },
-                    { opacity: 0, transform: `translate(${speedX * 2}px, ${speedY}px) rotate(${rotation + 90}deg)` }
-                ];
-                
-                const animation = particle.animate(keyframes, {
-                    duration: duration * 1000,
-                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-                });
-                
-                animation.onfinish = () => {
-                    particle.remove();
-                };
-            }
-        }
-
-        // Add extra packs (for testing)
-        function addPacks(amount) {
-            gameState.packs += amount;
-            updateStats();
-        }
-
-        // Load saved game
-        function loadGame() {
-            const savedGame = localStorage.getItem('pixelBlockGacha');
-            if (savedGame) {
-                try {
-                    const parsedGame = JSON.parse(savedGame);
-                    gameState.inventory = parsedGame.inventory || [];
-                    gameState.packs = parsedGame.packs || 5;
-                    updateStats();
-                    renderInventory();
-                } catch (e) {
-                    console.error('Failed to load saved game:', e);
+                // Decrease inventory count if different block is placed
+                if (oldBlockId !== builderState.selectedBlock) {
+                    updateInventoryCount(builderState.selectedBlock, -1);
+                    if (oldBlockId !== null) {
+                        updateInventoryCount(oldBlockId, 1);
+                    }
                 }
             }
         }
 
-        // Save game
-        function saveGame() {
-            try {
-                localStorage.setItem('pixelBlockGacha', JSON.stringify({
-                    inventory: gameState.inventory,
-                    packs: gameState.packs
-                }));
-            } catch (e) {
-                console.error('Failed to save game:', e);
-            }
-        }
-
-        // Auto-save game every minute
-        setInterval(saveGame, 60000);
-
-        // Save game before page unload
-        window.addEventListener('beforeunload', saveGame);
-
-        // Initialize the game
-        document.addEventListener('DOMContentLoaded', () => {
-            loadGame();
-            initGame();
-        });
-
-        // Cheat code for testing (add 10 packs)
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.code === 'KeyP') {
-                addPacks(10);
-            }
-        });
-    </script>
-</body>
-</html>
-   
+        // Update inventory count when using blocks
+        function updateInventoryCount(blockId, delta) {
+            const inventoryItem = gameState.inventory.find(item => item.id === blockId);
+            if (inventoryItem) {
+                inventoryItem.count += delta;
+                
+                // If count drops to 0, deselect if it was selected
+                if (inventoryItem.count <= 0) {
+                    // Remove from inventory if count is 0
+                    gameState.inventory = gameState.inventory.filter(item => item.id !== blockId);
+                    
+                    // Deselect if it was selected
+                    if (builderState.selectedBlock === blockId) {
+                        builderState.selectedBlock = null;
+                        
+                        // Clear selection UI
+                        const selectedEl = document
