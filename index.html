@@ -647,6 +647,333 @@
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
+        .shop-section {
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(10, 0, 41, 0.6);
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--neon-yellow);
+            box-shadow: 0 0 15px var(--neon-yellow);
+            margin-top: 20px;
+        }
+        
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--neon-yellow);
+        }
+        
+        .shop-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 5px var(--neon-yellow), 0 0 10px var(--neon-yellow);
+        }
+        
+        .shop-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            background: rgba(250, 255, 0, 0.2);
+            padding: 5px 15px;
+            border-radius: 30px;
+            border: 1px solid var(--neon-yellow);
+        }
+        
+        .coin-icon {
+            margin-right: 5px;
+            font-size: 1.5rem;
+        }
+        
+        .prefabs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon-yellow) var(--dark-bg);
+        }
+        
+        .prefabs-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .prefabs-grid::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+            border-radius: 10px;
+        }
+        
+        .prefabs-grid::-webkit-scrollbar-thumb {
+            background: var(--neon-yellow);
+            border-radius: 10px;
+        }
+        
+        .prefab-item {
+            background-color: rgba(30, 10, 60, 0.8);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .prefab-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--neon-yellow);
+        }
+        
+        .prefab-preview {
+            width: 120px;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prefab-preview img {
+            position: absolute;
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            max-height: 90%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            image-rendering: pixelated;
+        }
+        
+        .prefab-info {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .prefab-name {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .prefab-price {
+            font-size: 1.1rem;
+            color: var(--neon-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .prefab-price-icon {
+            margin-right: 5px;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--neon-yellow), #ff8c00);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+        
+        .buy-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        /* PREFAB CREATOR */
+        .prefab-creator-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .prefab-creator-panel.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .prefab-creator-content {
+            background: rgba(10, 0, 41, 0.9);
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 20px var(--neon-purple);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .prefab-creator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--neon-purple);
+        }
+        
+        .prefab-creator-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.8rem;
+            color: white;
+            text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+        }
+        
+        .close-prefab-creator {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-prefab-creator:hover {
+            color: var(--neon-pink);
+            transform: scale(1.1);
+        }
+        
+        .prefab-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-label {
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .form-input {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .prefab-preview-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .prefab-preview-area {
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prefab-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .prefab-action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cancel-prefab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .cancel-prefab-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .save-prefab-btn {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+        }
+        
+        .save-prefab-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        /* Mobile responsive styles */
+        @media (max-width: 767px) {
+            .prefabs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .prefab-creator-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .prefab-creator-title {
+                font-size: 1.5rem;
+            }
+            
+            .prefab-preview {
+                width: 100px;
+                height: 100px;
+            }
         /* PARTICLES */
         .particles-container {
             position: absolute;
@@ -847,6 +1174,49 @@
             </div>
         </div>
 </div>
+    <div class="shop-section">
+        <div class="shop-header">
+            <h2 class="shop-title">PREFAB SHOP</h2>
+            <div class="shop-stats">
+                <div class="coin-display">
+                    <span class="coin-icon">💰</span>
+                    <span id="coin-count">500</span>
+                </div>
+            </div>
+        </div>
+        <div class="prefabs-grid" id="prefabs-grid">
+            <!-- Prefabs will be dynamically populated here -->
+        </div>
+    </div>
+    
+    <!-- PREFAB CREATOR PANEL -->
+    <div class="prefab-creator-panel" id="prefab-creator-panel">
+        <div class="prefab-creator-content">
+            <div class="prefab-creator-header">
+                <h3 class="prefab-creator-title">CREATE PREFAB</h3>
+                <button class="close-prefab-creator" id="close-prefab-creator">✕</button>
+            </div>
+            <div class="prefab-form">
+                <div class="form-group">
+                    <label class="form-label" for="prefab-name-input">Prefab Name</label>
+                    <input type="text" id="prefab-name-input" class="form-input" placeholder="Enter a name for your prefab">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="prefab-price-input">Set Sell Price (optional)</label>
+                    <input type="number" id="prefab-price-input" class="form-input" placeholder="0" min="0">
+                </div>
+                <div class="prefab-preview-container">
+                    <div class="prefab-preview-area" id="prefab-preview-area">
+                        <!-- Prefab preview will be shown here -->
+                    </div>
+                </div>
+                <div class="prefab-actions">
+                    <button class="prefab-action-btn cancel-prefab-btn" id="cancel-prefab-btn">CANCEL</button>
+                    <button class="prefab-action-btn save-prefab-btn" id="save-prefab-btn">SAVE PREFAB</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Define pixel block asset data
@@ -1624,6 +1994,360 @@
         document.addEventListener('DOMContentLoaded', () => {
             makeGridDraggable();
         });
+
+        const prefabsData = [
+            {
+                id: 'prefab-1',
+                name: 'Small House',
+                price: 100,
+                preview: '/api/placeholder/120/120',
+                blocks: {
+                    // Sample structure - will be replaced with actual implementation
+                    '5-5': { id: 1, image: 'images/grass_block.png', name: 'Basic Grass Block' },
+                    '5-6': { id: 2, image: 'images/stone_block.png', name: 'Stone Block' },
+                    '6-5': { id: 4, image: 'images/wooden_crate.png', name: 'Wooden Crate' },
+                    '6-6': { id: 4, image: 'images/wooden_crate.png', name: 'Wooden Crate' }
+                }
+            },
+            {
+                id: 'prefab-2',
+                name: 'Tree Grove',
+                price: 150,
+                preview: '/api/placeholder/120/120',
+                blocks: {
+                    '3-3': { id: 1, image: 'images/grass_block.png', name: 'Basic Grass Block' },
+                    '3-4': { id: 1, image: 'images/grass_block.png', name: 'Basic Grass Block' },
+                    '4-3': { id: 1, image: 'images/grass_block.png', name: 'Basic Grass Block' },
+                    '4-4': { id: 1, image: 'images/grass_block.png', name: 'Basic Grass Block' }
+                }
+            },
+            {
+                id: 'prefab-3',
+                name: 'Magic Circle',
+                price: 200,
+                preview: '/api/placeholder/120/120',
+                blocks: {
+                    '2-2': { id: 5, image: 'images/magma_block.png', name: 'Magma Block' },
+                    '2-3': { id: 3, image: 'images/ice_block.png', name: 'Ice Block' },
+                    '3-2': { id: 3, image: 'images/ice_block.png', name: 'Ice Block' },
+                    '3-3': { id: 5, image: 'images/magma_block.png', name: 'Magma Block' }
+                }
+            }
+        ];
+        
+        // Extend game state with coins and custom prefabs
+        gameState.coins = 500; // Starting coins
+        gameState.customPrefabs = []; // Will store user-created prefabs
+        
+        // DOM Elements for prefab functionality
+        const prefabsGrid = document.getElementById('prefabs-grid');
+        const coinCountEl = document.getElementById('coin-count');
+        const prefabCreatorPanel = document.getElementById('prefab-creator-panel');
+        const closePrefabCreator = document.getElementById('close-prefab-creator');
+        const prefabNameInput = document.getElementById('prefab-name-input');
+        const prefabPriceInput = document.getElementById('prefab-price-input');
+        const prefabPreviewArea = document.getElementById('prefab-preview-area');
+        const cancelPrefabBtn = document.getElementById('cancel-prefab-btn');
+        const savePrefabBtn = document.getElementById('save-prefab-btn');
+        
+        // Add "Create Prefab" button to World Builder section
+        function addCreatePrefabButton() {
+            const worldControls = document.querySelector('.world-controls');
+            if (worldControls) {
+                const createPrefabBtn = document.createElement('button');
+                createPrefabBtn.className = 'world-btn';
+                createPrefabBtn.id = 'create-prefab-btn';
+                createPrefabBtn.textContent = 'CREATE PREFAB';
+                createPrefabBtn.addEventListener('click', openPrefabCreator);
+                worldControls.appendChild(createPrefabBtn);
+            }
+        }
+        
+        // Initialize shop and prefabs
+        function initPrefabsAndShop() {
+            renderPrefabsShop();
+            
+            // Load custom prefabs
+            loadCustomPrefabs();
+            
+            // Setup event listeners
+            closePrefabCreator.addEventListener('click', closePrefabCreatorPanel);
+            cancelPrefabBtn.addEventListener('click', closePrefabCreatorPanel);
+            savePrefabBtn.addEventListener('click', saveCustomPrefab);
+            
+            // Update coin display
+            updateCoinDisplay();
+        }
+        
+        // Render prefabs in the shop
+        function renderPrefabsShop() {
+            prefabsGrid.innerHTML = '';
+            
+            // Combine built-in prefabs with custom prefabs
+            const allPrefabs = [...prefabsData, ...gameState.customPrefabs];
+            
+            allPrefabs.forEach(prefab => {
+                const prefabEl = document.createElement('div');
+                prefabEl.className = 'prefab-item';
+                
+                const previewEl = document.createElement('div');
+                previewEl.className = 'prefab-preview';
+                
+                const imgEl = document.createElement('img');
+                imgEl.src = prefab.preview;
+                imgEl.alt = prefab.name;
+                
+                previewEl.appendChild(imgEl);
+                
+                const infoEl = document.createElement('div');
+                infoEl.className = 'prefab-info';
+                
+                const nameEl = document.createElement('div');
+                nameEl.className = 'prefab-name';
+                nameEl.textContent = prefab.name;
+                
+                const priceEl = document.createElement('div');
+                priceEl.className = 'prefab-price';
+                priceEl.innerHTML = `<span class="prefab-price-icon">💰</span>${prefab.price}`;
+                
+                const buyBtn = document.createElement('button');
+                buyBtn.className = 'buy-btn';
+                buyBtn.textContent = 'BUY';
+                buyBtn.disabled = gameState.coins < prefab.price;
+                
+                // Add click event to buy the prefab
+                buyBtn.addEventListener('click', () => buyPrefab(prefab));
+                
+                infoEl.appendChild(nameEl);
+                infoEl.appendChild(priceEl);
+                infoEl.appendChild(buyBtn);
+                
+                prefabEl.appendChild(previewEl);
+                prefabEl.appendChild(infoEl);
+                
+                prefabsGrid.appendChild(prefabEl);
+            });
+        }
+        
+        // Buy a prefab
+        function buyPrefab(prefab) {
+            // Check if user has enough coins
+            if (gameState.coins < prefab.price) {
+                alert('Not enough coins!');
+                return;
+            }
+            
+            // Deduct coins
+            gameState.coins -= prefab.price;
+            updateCoinDisplay();
+            
+            // Place the prefab in the center of the grid
+            const gridCenter = Math.floor(worldState.gridSize / 2);
+            placePrefab(prefab, gridCenter - 2, gridCenter - 2);
+            
+            // Save game state
+            saveGame();
+            
+            // Update shop (to update disabled buttons)
+            renderPrefabsShop();
+        }
+        
+        // Place a prefab on the grid
+        function placePrefab(prefab, startRow, startCol) {
+            // Clear any blocks in the target area first (optional)
+            // You can modify this behavior based on your preference
+            
+            // Place each block from the prefab
+            for (const [position, block] of Object.entries(prefab.blocks)) {
+                const [blockRow, blockCol] = position.split('-').map(Number);
+                
+                // Calculate position on the grid
+                const targetRow = startRow + blockRow;
+                const targetCol = startCol + blockCol;
+                
+                // Place block if coordinates are valid
+                if (targetRow >= 0 && targetRow < worldState.gridSize && 
+                    targetCol >= 0 && targetCol < worldState.gridSize) {
+                    
+                    // Store the block in world state
+                    const key = `${targetRow}-${targetCol}`;
+                    worldState.blocks[key] = {
+                        id: block.id,
+                        image: block.image,
+                        name: block.name
+                    };
+                    
+                    // Render the block
+                    renderBlock(targetRow, targetCol);
+                }
+            }
+            
+            // Save world state
+            saveWorldState();
+        }
+        function openPrefabCreator() {
+            // Get blocks from the world state
+            const blocks = { ...worldState.blocks };
+            
+            // If no blocks placed, show message
+            if (Object.keys(blocks).length === 0) {
+                alert('Place some blocks in the world first!');
+                return;
+            }
+            
+            // Show prefab creator panel
+            prefabCreatorPanel.classList.add('active');
+            
+            // Reset form
+            prefabNameInput.value = 'My Custom Prefab';
+            prefabPriceInput.value = '50';
+            
+            // Show preview (simplified for this implementation)
+            prefabPreviewArea.innerHTML = '';
+            const previewImg = document.createElement('img');
+            previewImg.src = '/api/placeholder/120/120'; // Would be generated from actual blocks
+            previewImg.alt = 'Prefab Preview';
+            previewImg.style.position = 'absolute';
+            previewImg.style.top = '50%';
+            previewImg.style.left = '50%';
+            previewImg.style.transform = 'translate(-50%, -50%)';
+            prefabPreviewArea.appendChild(previewImg);
+        }
+        
+        // Close prefab creator panel
+        function closePrefabCreatorPanel() {
+            prefabCreatorPanel.classList.remove('active');
+        }
+        
+        // Save custom prefab
+        function saveCustomPrefab() {
+            const name = prefabNameInput.value.trim();
+            const price = parseInt(prefabPriceInput.value) || 0;
+            
+            // Validate inputs
+            if (!name) {
+                alert('Please enter a name for your prefab');
+                return;
+            }
+            
+            // Create prefab object
+            const newPrefab = {
+                id: 'custom-' + Date.now(),
+                name: name,
+                price: price,
+                preview: '/api/placeholder/120/120', // Would be generated from actual blocks
+                blocks: { ...worldState.blocks } // Copy current blocks
+            };
+            
+            // Add to custom prefabs
+            gameState.customPrefabs.push(newPrefab);
+            
+            // Save custom prefabs
+            saveCustomPrefabs();
+            
+            // Update shop
+            renderPrefabsShop();
+            
+            // Close panel
+            closePrefabCreatorPanel();
+            
+            // Show confirmation
+            alert('Prefab saved successfully!');
+        }
+        
+        // Load custom prefabs from localStorage
+        function loadCustomPrefabs() {
+            try {
+                const savedPrefabs = localStorage.getItem('pixelBlockCustomPrefabs');
+                if (savedPrefabs) {
+                    gameState.customPrefabs = JSON.parse(savedPrefabs);
+                }
+            } catch (e) {
+                console.error('Failed to load custom prefabs:', e);
+                gameState.customPrefabs = [];
+            }
+        }
+        
+        // Save custom prefabs to localStorage
+        function saveCustomPrefabs() {
+            try {
+                localStorage.setItem('pixelBlockCustomPrefabs', JSON.stringify(gameState.customPrefabs));
+            } catch (e) {
+                console.error('Failed to save custom prefabs:', e);
+            }
+        }
+        
+        // Update coin display
+        function updateCoinDisplay() {
+            coinCountEl.textContent = gameState.coins;
+        }
+        
+        // Add coins when opening packs (1-5 coins per pack)
+        const originalOpenPack = openPack;
+        openPack = function() {
+            // Call original function
+            originalOpenPack();
+            
+            // Add coins if pack was opened
+            if (gameState.isAnimating) {
+                const coinsEarned = Math.floor(Math.random() * 5) + 1;
+                setTimeout(() => {
+                    gameState.coins += coinsEarned;
+                    updateCoinDisplay();
+                    saveGame();
+                }, 1500);
+            }
+        };
+        
+        // Extend the original save game function
+        const originalSaveGame = saveGame;
+        saveGame = function() {
+            originalSaveGame();
+            
+            // Save coins
+            try {
+                localStorage.setItem('pixelBlockCoins', gameState.coins);
+            } catch (e) {
+                console.error('Failed to save coins:', e);
+            }
+        };
+        
+        // Extend the original load game function
+        const originalLoadGame = loadGame;
+        loadGame = function() {
+            originalLoadGame();
+            
+            // Load coins
+            try {
+                const savedCoins = localStorage.getItem('pixelBlockCoins');
+                if (savedCoins) {
+                    gameState.coins = parseInt(savedCoins);
+                }
+            } catch (e) {
+                console.error('Failed to load coins:', e);
+            }
+        };
+        
+        // Extend initialization function
+        const originalInitFunction = initGame;
+        initGame = function() {
+            // Call original initialization
+            originalInitFunction();
+            
+            // Initialize prefabs functionality
+            initPrefabsAndShop();
+            
+            // Add create prefab button
+            addCreatePrefabButton();
+        };
+        
+        // Generate a screenshot of placed blocks for prefab preview
+        // Note: This is simplified for this implementation
+        function generatePrefabPreview(blocks) {
+            // In a real implementation, this would create a screenshot of the blocks
+            // For now, we're just using placeholder images
+            return '/api/placeholder/120/120';
+        }
 
         // Auto-save game every minute
         setInterval(saveGame, 60000);
