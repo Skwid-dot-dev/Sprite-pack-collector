@@ -466,7 +466,7 @@
             position: absolute;
             width: 32px;
             height: 32px;
-            transform: rotateX(60deg) rotateZ(45deg);
+            transform: rotate(45deg);
             background: rgba(255, 255, 255, 0.05);
             border: 1px dashed rgba(255, 255, 255, 0.2);
             cursor: pointer;
@@ -1151,7 +1151,7 @@
         
         <div class="particles-container" id="particles-container"></div>
     </div>
-    div class="world-builder-section">
+    <div class="world-builder-section">
             <div class="world-builder-header">
                 <h2 class="world-builder-title">WORLD BUILDER</h2>
                 <div class="grid-controls">
@@ -1370,6 +1370,50 @@
                 });
             });
         }
+
+        <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCP26lOVBK6nDSqGPcafyUedGdFW9bpgJs",
+    authDomain: "blocky-builds.firebaseapp.com",
+    projectId: "blocky-builds",
+    storageBucket: "blocky-builds.firebasestorage.app",
+    messagingSenderId: "1065648120253",
+    appId: "1:1065648120253:web:9a4465eb555afcbcea72d4",
+    measurementId: "G-9920RZLL2D"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  // Sign in function
+  window.signInWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      alert(`Signed in as ${user.displayName}`);
+      console.log(user);
+
+      // OPTIONAL: You can call your save function here with user.uid or email
+    } catch (error) {
+      console.error("Sign-in error:", error);
+    }
+  };
+
+  // Sign out function
+  window.signOutUser = async () => {
+    await signOut(auth);
+    alert("Signed out");
+  };
+
+        <button onclick="signInWithGoogle()">Sign In with Google</button>
+<button onclick="signOutUser()">Sign Out</button>
+
 
         // Open a pack
         function openPack() {
